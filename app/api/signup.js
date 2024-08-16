@@ -7,11 +7,12 @@ export default async function POST(req) {
     const data = await User.findOne({ email, password });
     if (data) {
       return NextResponse.json(
-        { message: "Login Successfully" },
-        { status: 200 }
+        { message: "Account already exist" },
+        { status: 300 }
       );
     } else {
-      return NextResponse.json({ message: "Login Failed" }, { status: 300 });
+        User.create({email,password});
+      return NextResponse.json({ message: "Account created" }, { status: 200 });
     }
   } catch (error) {}
 }

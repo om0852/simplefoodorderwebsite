@@ -1,25 +1,26 @@
-"use client"
-import React, { useState, useEffect } from 'react';
-import './globals.css'; // Optional: If you have custom styles
+"use client";
+import React, { useState, useEffect } from "react";
+import "./globals.css"; // Optional: If you have custom styles
+import axios from "axios";
 
 const Home = () => {
-  const [currentPage, setCurrentPage] = useState('welcome');
+  const [currentPage, setCurrentPage] = useState("welcome");
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
   const [orders, setOrders] = useState([]);
   const [menu, setMenu] = useState([]);
 
   useEffect(() => {
-    const savedMenu = JSON.parse(localStorage.getItem('menuu')) || [
-      { name: 'Shahi Paneer', price: 220 },
-      { name: 'Paneer Malai Kofta', price: 220 },
+    const savedMenu = JSON.parse(localStorage.getItem("menuu")) || [
+      { name: "Shahi Paneer", price: 220 },
+      { name: "Paneer Malai Kofta", price: 220 },
     ];
     setMenu(savedMenu);
   }, []);
 
-  const handleLogin = (userData) => {
-    setUser(userData);
-    setCurrentPage(userData.role === 'admin' ? 'admin' : 'customer');
+  const handleLogin = async (userData) => {
+    await axios.post("/api/login",{email,password,role});
+    setCurrentPage(userData.role === "admin" ? "admin" : "customer");
   };
 
   const handleAddToCart = (item) => {
@@ -35,7 +36,7 @@ const Home = () => {
   const handleAddItem = (newItem) => {
     const updatedMenu = [...menu, newItem];
     setMenu(updatedMenu);
-    localStorage.setItem('menuu', JSON.stringify(updatedMenu));
+    localStorage.setItem("menuu", JSON.stringify(updatedMenu));
   };
 
   const handleCompleteOrder = (orderId) => {
@@ -49,32 +50,60 @@ const Home = () => {
         <h1>Hotel Ambika</h1>
         <nav>
           {user ? (
-            <a href="#" onClick={() => setCurrentPage(user.role === 'admin' ? 'admin' : 'customer')}>
-              {user.role === 'admin' ? 'Admin Panel' : 'Customer Page'}
+            <a
+              href="#"
+              onClick={() =>
+                setCurrentPage(user.role === "admin" ? "admin" : "customer")
+              }
+            >
+              {user.role === "admin" ? "Admin Panel" : "Customer Page"}
             </a>
           ) : (
-            <a href="#" onClick={() => setCurrentPage('login')}>Login</a>
+            <a href="#" onClick={() => setCurrentPage("login")}>
+              Login
+            </a>
           )}
         </nav>
       </header>
 
-      {currentPage === 'welcome' && (
+      {currentPage === "welcome" && (
         <div className="welcome-container">
-          <img src="https://i.ibb.co/HxKWcgb/Whats-App-Image-2024-08-13-at-10-58-47-PM-1.jpg" alt="Hotel Ambika" className="welcome-image" />
+          <img
+            src="https://i.ibb.co/HxKWcgb/Whats-App-Image-2024-08-13-at-10-58-47-PM-1.jpg"
+            alt="Hotel Ambika"
+            className="welcome-image"
+          />
           <h1>WELCOME TO HOTEL AMBIKA</h1>
           <h3>Andarsul, Tal:-Yeola, Dist:-Nashik (423402)</h3>
-          <button onClick={() => setCurrentPage('login')}>Get Started</button>
+          <button onClick={() => setCurrentPage("login")}>Get Started</button>
         </div>
       )}
 
-      {currentPage === 'login' && (
+      {currentPage === "login" && (
         <div className="login-form">
           <div className="login-images">
-            <img src="https://www.pngkey.com/png/detail/251-2510994_savithri-catering-has-been-established-for-over-10.png" alt="Hotel Ambika" className="login-image" />
+            <img
+              src="https://www.pngkey.com/png/detail/251-2510994_savithri-catering-has-been-established-for-over-10.png"
+              alt="Hotel Ambika"
+              className="login-image"
+            />
             <h1>Login Page</h1>
-            <img src="https://restro.smarttechsoft.in/wp-content/uploads/2022/09/veg-thali-1.png" alt="Hotel Ambika" className="login-image" />
+            <img
+              src="https://restro.smarttechsoft.in/wp-content/uploads/2022/09/veg-thali-1.png"
+              alt="Hotel Ambika"
+              className="login-image"
+            />
           </div>
-          <form onSubmit={(e) => { e.preventDefault(); handleLogin({ email: e.target.email.value, password: e.target.password.value, role: e.target.role.value }); }}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleLogin({
+                email: e.target.email.value,
+                password: e.target.password.value,
+                role: e.target.role.value,
+              });
+            }}
+          >
             <label htmlFor="email">Email:</label>
             <input type="email" id="email" required />
             <label htmlFor="password">Password:</label>
@@ -89,7 +118,7 @@ const Home = () => {
         </div>
       )}
 
-      {currentPage === 'customer' && (
+      {currentPage === "customer" && (
         <div className="customer-page">
           <h2>Order Food</h2>
           <div id="menu">
@@ -98,7 +127,9 @@ const Home = () => {
               <div key={index}>
                 <h4>{item.name}</h4>
                 <p>Price: ${item.price}</p>
-                <button onClick={() => handleAddToCart(item)}>Add to Cart</button>
+                <button onClick={() => handleAddToCart(item)}>
+                  Add to Cart
+                </button>
               </div>
             ))}
           </div>
@@ -116,7 +147,16 @@ const Home = () => {
             )}
           </div>
           {cart.length > 0 && (
-            <form onSubmit={(e) => { e.preventDefault(); handlePlaceOrder({ name: e.target.name.value, address: e.target.address.value, mobile: e.target.mobile.value }); }}>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handlePlaceOrder({
+                  name: e.target.name.value,
+                  address: e.target.address.value,
+                  mobile: e.target.mobile.value,
+                });
+              }}
+            >
               <h3>Place Order</h3>
               <label htmlFor="name">Name:</label>
               <input type="text" id="name" required />
@@ -145,10 +185,18 @@ const Home = () => {
         </div>
       )}
 
-      {currentPage === 'admin' && (
+      {currentPage === "admin" && (
         <div className="admin-panel">
           <h2>Admin Panel</h2>
-          <form onSubmit={(e) => { e.preventDefault(); handleAddItem({ name: e.target['item-name'].value, price: e.target['item-price'].value }); }}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleAddItem({
+                name: e.target["item-name"].value,
+                price: e.target["item-price"].value,
+              });
+            }}
+          >
             <h3>Add New Item</h3>
             <label htmlFor="item-name">Item Name:</label>
             <input type="text" id="item-name" required />
@@ -167,7 +215,9 @@ const Home = () => {
                   <p>Name: {order.name}</p>
                   <p>Address: {order.address}</p>
                   <p>Mobile: {order.mobile}</p>
-                  <button onClick={() => handleCompleteOrder(index)}>Complete Order</button>
+                  <button onClick={() => handleCompleteOrder(index)}>
+                    Complete Order
+                  </button>
                 </div>
               ))
             )}
