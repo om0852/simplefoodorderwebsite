@@ -1,12 +1,17 @@
 import Order from "@/models/Order";
+import { connectToDB } from "@/utils/connect";
 import { NextResponse } from "next/server";
 
-export default async function POST(req) {
+export  async function POST(req) {
   try {
     await connectToDB();
 
-    const { name, items, price } = await req.json();
-    await Order.create({ name, items, price });
+    const {data } = await req.json();
+    console.log(data)
+    await Order.create({ data });
     return NextResponse.json({ message: "Order Created" }, { status: 200 });
-  } catch (error) {}
+  } catch (error) {
+    return NextResponse.json({ message: error.message }, { status: 200 });
+
+  }
 }

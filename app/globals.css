@@ -63,6 +63,7 @@ img.hidden {
 .welcome-image {
   max-width: 70%;
   height: auto;
+  margin: 0 auto;
   margin-bottom: 20px;
 }
 .welcome-container h1 {

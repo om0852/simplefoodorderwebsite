@@ -4,9 +4,9 @@ import { NextResponse } from "next/server";
 
 export  async function POST(req) {
   try {
-    const {email,password}=await req.json()
+    const {email,password,role}=await req.json()
     await connectToDB();
-    const data = await User.findOne({ email, password });
+    const data = await User.findOne({ email, password,type:role });
     if (data) {
       return NextResponse.json(
         { message: "Login Successfully" },

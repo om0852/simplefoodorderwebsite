@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import Menu from './Menu';
-import Cart from './Cart';
+import React from 'react';
 import PlacedOrders from './PlacedOrders';
+import axios from 'axios';
 
-const CustomerPage = () => {
-  const [cart, setCart] = useState([]);
-  const [orders, setOrders] = useState([]);
-  
-  const handleAddToCart = (item) => {
-    setCart([...cart, item]);
-  };
-
-  const handlePlaceOrder = (orderDetails) => {
-    const newOrder = { ...orderDetails, items: cart };
+const CustomerPage = ({ cart, menu, orders, setOrders, setCart }) => {
+  const handlePlaceOrder = (formElements) => {
+    const newOrder = {
+      name: formElements.name.value,
+      address: formElements.address.value,
+      mobile: formElements.mobile.value,
+      items: cart,
+    };
+    axios.post("/api/order",{data:[...orders, newOrder]})
     setOrders([...orders, newOrder]);
     setCart([]);
   };
@@ -20,8 +18,8 @@ const CustomerPage = () => {
   return (
     <div className="customer-page">
       <h2>Order Food</h2>
-      <Menu onAddToCart={handleAddToCart} />
-      <Cart cart={cart} />
+      {/* <Menu onAddToCart={handleAddToCart} /> */}
+      {/* <Cart cart={cart} /> */}
       {cart.length > 0 && (
         <form onSubmit={(e) => { e.preventDefault(); handlePlaceOrder(e.target.elements); }}>
           <h3>Place Order</h3>

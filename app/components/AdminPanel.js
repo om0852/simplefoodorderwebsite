@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Orders from './Orders';
-import CompletedOrders from './CompletedOrders';
 
 const AdminPanel = ({ orders, onAddItem, onCompleteOrder }) => {
   const [newItem, setNewItem] = useState({ name: '', price: '' });
@@ -23,9 +22,9 @@ const AdminPanel = ({ orders, onAddItem, onCompleteOrder }) => {
         <button type="submit">Add Item</button>
       </form>
       <Orders orders={orders} onCompleteOrder={onCompleteOrder} />
-      <CompletedOrders />
     </div>
   );
 };
 
 export default AdminPanel;
+

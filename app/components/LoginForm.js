@@ -12,10 +12,14 @@ const LoginForm = () => {
     event.preventDefault();
     console.log(email,password)
     await axios.post("/api/login",{email,password,role}).then((res)=>{
-      if(res.data.message){
+      if(res.data.message!="Login Failed"){
         localStorage.setItem("food_role",role);
         alert(res.data.message)
         router.push("/")
+      }
+      else{
+        alert(res.data.message)
+
       }
     })
   };

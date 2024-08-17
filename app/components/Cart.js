@@ -1,5 +1,5 @@
 import React from 'react';
-
+import "@/app/globals.css"
 const Cart = ({ cart }) => (
   <div id="cart">
     <h3>Cart</h3>
