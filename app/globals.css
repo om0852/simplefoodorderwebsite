@@ -33,8 +33,13 @@ form {
   display: flex;
   flex-direction: column;
 }
-label, input, button, select {
+label{
   margin-bottom: 1em;
+
+}
+ input, button, select {
+  margin-bottom: 1em;
+  border: 1px solid #ccc;
 }
 button {
   padding: 0.5em;

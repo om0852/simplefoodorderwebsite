@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 const Menu = ({menu, onAddToCart }) => {
  
   return (
-    <div id="menu">
+    <div id="menu" >
       <h3>Menu</h3>
       {menu && menu.map((item, index) => (
         <div key={index}>

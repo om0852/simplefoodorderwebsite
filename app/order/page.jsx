@@ -81,9 +81,12 @@ const Order = () => {
   return (
     <div>
         <Header/>
+        <div className='container'>
         <Menu onAddToCart={addToCart} menu={menu}/>
+
         <Cart cart={cart}/>
         <CustomerPage orders={orders} cart={cart} menu={menu} setOrders={setOrders} setCart={setCart}/>
+        </div>
         <Footer/>
       
     </div>

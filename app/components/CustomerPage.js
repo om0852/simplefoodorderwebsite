@@ -16,7 +16,7 @@ const CustomerPage = ({ cart, menu, orders, setOrders, setCart }) => {
   };
 
   return (
-    <div className="customer-page">
+    <div className="customer-page container">
       <h2>Order Food</h2>
       {/* <Menu onAddToCart={handleAddToCart} /> */}
       {/* <Cart cart={cart} /> */}

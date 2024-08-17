@@ -1,7 +1,7 @@
 import React from 'react';
 import "@/app/globals.css"
 const Cart = ({ cart }) => (
-  <div id="cart">
+  <div id="cart" className='container'>
     <h3>Cart</h3>
     {cart.length === 0 ? (
       <p>No items in the cart.</p>
