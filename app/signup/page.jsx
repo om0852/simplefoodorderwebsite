@@ -1,23 +1,15 @@
+"use client"
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-const LoginForm = () => {
-  const router = useRouter()
+const Page = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('customer');
 
-  const handleSubmit = async(event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(email,password)
-    await axios.post("/api/login",{email,password,role}).then((res)=>{
-      if(res.data.message){
-        localStorage.setItem("food_role",role);
-        alert(res.data.message)
-        router.push("/")
-      }
-    })
+    axios.post("/api/signup",{email,password,role}).then((res)=>alert(res.data.message))
   };
 
   return (
@@ -37,10 +29,10 @@ const LoginForm = () => {
           <option value="customer">Customer</option>
           <option value="admin">Admin</option>
         </select>
-        <button type="submit">Login</button>
+        <button type="submit">Signup</button>
       </form>
     </div>
   );
 };
 
-export default LoginForm;
+export default Page;

@@ -1,9 +1,11 @@
 import User from "@/models/User";
+import { connectToDB } from "@/utils/connect";
 import { NextResponse } from "next/server";
 
-export default async function POST(req) {
+export  async function POST(req) {
   try {
     const {email,password}=await req.json()
+    await connectToDB();
     const data = await User.findOne({ email, password });
     if (data) {
       return NextResponse.json(
@@ -11,7 +13,9 @@ export default async function POST(req) {
         { status: 200 }
       );
     } else {
-      return NextResponse.json({ message: "Login Failed" }, { status: 300 });
+      return NextResponse.json({ message: "Login Failed" }, { status: 200 });
     }
-  } catch (error) {}
+  } catch (error) {
+    
+  }
 }

@@ -1,14 +1,16 @@
 import User from "@/models/User";
+import { connectToDB } from "@/utils/connect";
 import { NextResponse } from "next/server";
 
-export default async function POST(req) {
+export async function POST(req) {
   try {
-    const {email,password}=await req.json()
+    const {email,password}=await req.json();
+    await connectToDB();
     const data = await User.findOne({ email, password });
     if (data) {
       return NextResponse.json(
         { message: "Account already exist" },
-        { status: 300 }
+        { status: 200 }
       );
     } else {
         User.create({email,password});
