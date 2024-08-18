@@ -15,7 +15,7 @@ const Page = () => {
       .then((res) => alert(res.data.message));
     } else {
       event.preventDefault();
-      alert("invalid otp");
+      alert("Invalid otp");
     }
   };
 

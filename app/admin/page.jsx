@@ -23,7 +23,7 @@ const Page = () => {
                         <ul>
                             {order.items.map((item, itemIndex) => (
                                 <li key={itemIndex}>
-                                    {item.name} - ${item.price}
+                                    ₹{item.name} - {item.price}
                                 </li>
                             ))}
                         </ul>
