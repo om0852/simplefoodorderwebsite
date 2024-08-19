@@ -13,7 +13,7 @@ export async function POST(req) {
       from: "+12564089658",
       to: `+91${to}`,
     });
-    return NextResponse.json({ message: "Sent otp" ,otp:otp});
+    return NextResponse.json({ message: "Sent otp SUCCESSFULLY" ,otp:otp},{status:200});
   } catch (error) {
     return NextResponse.json({ message: error.message });
   }
