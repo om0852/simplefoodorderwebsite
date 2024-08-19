@@ -3,12 +3,19 @@ import React, { useEffect, useState } from 'react'
 
 const Page = () => {
     const [orders, setOrders] = useState([]);
-    
+
     useEffect(() => {
+        if (typeof window !== 'undefined') {
+            // This check ensures the code only runs in the browser
+            localCaller();
+        }
+    }, []);
+
+    function localCaller() {
         const savedOrders = JSON.parse(localStorage.getItem('orders')) || [];
         setOrders(savedOrders);
         console.log(savedOrders);
-    }, []);
+    }
 
     return (
         <div>

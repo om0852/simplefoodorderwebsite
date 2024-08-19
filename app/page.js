@@ -12,9 +12,6 @@ const Home = () => {
   <div>
     <Header/>
     <WelcomePage/>
-    <span className="">
-
-    </span>
     <Footer/>
   </div> 
   );

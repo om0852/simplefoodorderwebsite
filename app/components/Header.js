@@ -1,35 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const Header = () => (
-  <header>
-    <h1>Hotel Ambika</h1>
-    <nav>
-      {!localStorage.getItem("food_role") && (
-        <a href="login" id="login-link">
-          Login
-        </a>
-      )}
-      {!localStorage.getItem("food_role") && (
-        <a href="signup" id="login-link">
-          Signup
-        </a>
-      )}
-      {localStorage.getItem("food_role") == "admin" && (
-        <a href="admin" id="admin-link">
-          Admin Panel
-        </a>
-      )}
-      {localStorage.getItem("food_role")  && (
-        <button
-          onClick={() => {
-            localStorage.removeItem("food_role");
-          }}
-        >
-          Logout
-        </button>
-      )}
-    </nav>
-  </header>
-);
+const Header = () => {
+  const [role, setRole] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Access localStorage only on the client side
+      setRole(localStorage.getItem("food_role"));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("food_role");
+    setRole(null);
+  };
+
+  return (
+    <header>
+      <h1>Hotel Ambika</h1>
+      <nav>
+        {!role && (
+          <>
+            <a href="login" id="login-link">
+              Login
+            </a>
+            <a href="signup" id="signup-link">
+              Signup
+            </a>
+          </>
+        )}
+        {role === "admin" && (
+          <a href="admin" id="admin-link">
+            Admin Panel
+          </a>
+        )}
+        {role && (
+          <button onClick={handleLogout}>
+            Logout
+          </button>
+        )}
+      </nav>
+    </header>
+  );
+};
 
 export default Header;
