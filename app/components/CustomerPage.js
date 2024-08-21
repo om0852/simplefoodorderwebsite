@@ -5,6 +5,7 @@ import axios from "axios";
 const CustomerPage = ({ cart, menu, orders, setOrders, setCart }) => {
   const [gotp, setGotp] = useState(Infinity);
   const [mobile, setMobile] = useState("");
+  const [email,setEmail]=useState("")
   const [uotp, setUotp] = useState("");
   const handlePlaceOrder = (formElements) => {
     if(uotp==gotp){
@@ -48,6 +49,13 @@ const CustomerPage = ({ cart, menu, orders, setOrders, setCart }) => {
             onChange={(e) => setMobile(e.target.value)}
             required
           />
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
           {gotp != Infinity && (
             <>
               <label htmlFor="mobile">Otp:</label>
@@ -59,7 +67,7 @@ const CustomerPage = ({ cart, menu, orders, setOrders, setCart }) => {
             <button
               type="button"
               onClick={() => {
-                axios.post("/api/sendotp", { to: mobile }).then((res) => {
+                axios.post("/api/sendotp", { email }).then((res) => {
                   console.log(res.data)
                   if (res.data.otp) {
 
