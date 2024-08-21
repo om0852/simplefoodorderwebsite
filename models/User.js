@@ -6,5 +6,5 @@ const ModelSchema =  new Schema({
     type:String,
 })
 
-const User = models.user || model("user",ModelSchema);
+const User = models.user || model("fooduser",ModelSchema);
 export default User;

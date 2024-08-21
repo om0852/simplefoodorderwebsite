@@ -1,39 +1,52 @@
+import { connectToDB } from "@/utils/connect";
 import { NextResponse } from "next/server";
-import twilio from "twilio";
+import nodemailer from "nodemailer";
 
 export async function POST(req) {
+  const { email } = await req.json();
+
   try {
-    const { to } = await req.json();
-
-    // Log environment variables to ensure they're being accessed correctly
-    console.log("Twilio SID:", process.env.A_SID);
-    console.log("Twilio Token:", process.env.A_TOKEN);
-
-    // Ensure the environment variables are defined
-    if (!process.env.A_SID || !process.env.A_TOKEN) {
-      throw new Error("Twilio credentials are not set properly.");
-    }
-
-    const client = new twilio(process.env.A_SID, process.env.A_TOKEN);
-
-    const generateOtp = () => {
-      return Math.floor(100000 + Math.random() * 900000);
-    };
-
-    const otp = generateOtp();
-
-    await client.messages.create({
-      body: `Your OTP is ${otp}`,
-      from: "+12564089658", // Make sure this number is a valid Twilio number
-      to: `+91${to}`,
+    await connectToDB();
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "smartcoder0852@gmail.com",
+        pass: "iuyk wfjm wswv ejyq",
+      },
     });
 
+    // Function to generate OTP
+    function generateOTP() {
+      let digits = "0123456789";
+      let OTP = "";
+      let len = digits.length;
+      for (let i = 0; i < 4; i++) {
+        OTP += digits[Math.floor(Math.random() * len)];
+      }
+      return OTP;
+    }
+
+    let otp = generateOTP();
+
+    const mail = await transporter.sendMail({
+      from: "smartcoder0852@gmail.com",
+      to: email,
+      subject: `Your OTP for creating an account`,
+      html: `<h1>Your OTP for creating an account is ${otp}</h1>`,
+    });
+
+    // Set expiration time to 5 minutes from now
+    const expireTime = new Date(Date.now() + 5 * 60 * 1000);
+
     return NextResponse.json(
-      { message: "Sent OTP SUCCESSFULLY", otp: otp },
+      { message: "Success: email was sent", otp },
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error sending OTP:", error.message);
-    return NextResponse.json({ message: error.message }, { status: 500 });
+    console.log(error);
+    return NextResponse.json(
+      { message: "COULD NOT SEND MESSAGE" },
+      { status: 500 }
+    );
   }
 }

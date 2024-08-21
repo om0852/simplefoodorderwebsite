@@ -5,85 +5,111 @@ import React, { useState } from "react";
 const Page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("customer");
   const [gotp, setGotp] = useState(Infinity);
   const [uotp, setUotp] = useState("");
-  const handleSubmit = (event) => {
-    if (uotp == gotp) {
-      axios
-      .post("/api/signup", { email, password, role })
-      .then((res) => alert(res.data.message));
-    } else {
-      event.preventDefault();
-      alert("Invalid otp");
-    }
-  };
 
+  const sendOtp = () => {
+    axios
+      .post("/api/sendotp", { email })
+      .then((res) => {
+        setGotp(res.data.otp);
+        alert("Otp Send Successfully");
+      })
+      .catch((err) => console.log(err));
+  };
+  const handleSubmit = () => {
+    axios
+      .post("/api/signup", { email, password, role: "customer" })
+      .then((res) => alert(res.data.message))
+      .catch((err) => alert("something went wrong"));
+  };
   return (
-    <div className="login-form">
-      <div className="login-images">
-        <img
-          src="https://www.pngkey.com/png/detail/251-2510994_savithri-catering-has-been-established-for-over-10.png"
-          alt="Hotel Ambika"
-          className="login-image"
-        />
-        <h1>Login Page</h1>
-        <img
-          src="https://restro.smarttechsoft.in/wp-content/uploads/2022/09/veg-thali-1.png"
-          alt="Hotel Ambika"
-          className="login-image"
-        />
-      </div>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Number:</label>
-        <input
-          type="number"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <label htmlFor="password">Password:</label>
-        <input
-          type="text"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        {gotp != Infinity && (
-          <>
-            <label>Otp:</label>
-            <input
-              type="number"
-              value={uotp}
-              onChange={(e) => setUotp(e.target.value)}
-              required
-            />
-          </>
-        )}
-        <label htmlFor="role">Role:</label>
-        <select
-          id="role"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-        >
-          <option value="customer">Customer</option>
-        </select>
-        <button
-          type="button"
-          onClick={() => {
-            axios.post("/api/sendotp", { to: email }).then((res) => {
-              if (res.data.otp) {
-                setGotp(res.data.otp);
-              }
-            });
-          }}
-        >
-          Send otp
-        </button>
-        <button type="submit">Signup</button>
-      </form>
+    <div>
+      <section class="bg-gray-50 dark:bg-gray-900">
+        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+          <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+              <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                Sign Up to your account
+              </h1>
+              <form class="space-y-4 md:space-y-6" action="#">
+                <div>
+                  <label
+                    for="email"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Your email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="name@company.com"
+                    required
+                  />
+                </div>
+                {gotp != Infinity && (
+                  <div>
+                    <label
+                      for="otp"
+                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Otp
+                    </label>
+                    <input
+                      type="number"
+                      name="otp"
+                      onChange={(e) => setUotp(e.target.value)}
+                      id="otp"
+                      placeholder="Enter Otp"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      required
+                    />
+                  </div>
+                )}
+                <div>
+                  <label
+                    for="password"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    id="password"
+                    placeholder="••••••••"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required
+                  />
+                </div>
+
+                {gotp == Infinity && (
+                  <button
+                    onClick={sendOtp}
+                    type="button"
+                    class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  >
+                    Send Otp
+                  </button>
+                )}
+                {gotp != Infinity && (
+                  <button
+                    type="submit"
+                    onClick={handleSubmit}
+                    class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  >
+                    Sign up
+                  </button>
+                )}
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
