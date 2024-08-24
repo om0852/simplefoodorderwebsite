@@ -6,6 +6,7 @@ import Cart from "../components/Cart";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import CustomerPage from "../components/CustomerPage";
+import axios from "axios";
 
 const defaultMenu = () => [
   { name: "Shahi Paneer", price: 220 },
@@ -32,7 +33,7 @@ const Order = () => {
   // Load saved data from localStorage
   useEffect(() => {
     if (isBrowser) {
-      const savedMenu = JSON.parse(localStorage.getItem("menuu")) || [];
+    axios.get("/api/product").then((res)=>setMenu(res.data.data))
       const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
       const savedCompletedOrders =
         JSON.parse(localStorage.getItem("completedOrders")) || [];
@@ -40,7 +41,6 @@ const Order = () => {
       const savedCustomerDetails =
         JSON.parse(localStorage.getItem("customerDetails")) || {};
 
-      setMenu(savedMenu.length ? savedMenu : defaultMenu());
       setOrders(savedOrders);
       setCompletedOrders(savedCompletedOrders);
       setCart(savedCart);
@@ -51,7 +51,6 @@ const Order = () => {
   // Save data to localStorage on state change
   useEffect(() => {
     if (isBrowser) {
-      localStorage.setItem("menuu", JSON.stringify(menu));
       localStorage.setItem("orders", JSON.stringify(orders));
       localStorage.setItem("completedOrders", JSON.stringify(completedOrders));
       localStorage.setItem("cart", JSON.stringify(cart));
@@ -87,17 +86,16 @@ const Order = () => {
       <Header />
       <div className="container">
         <Menu onAddToCart={addToCart} menu={menu} />
-
         {/* Other pages/components can be added here based on currentPage */}
         <Cart cart={cart} />
       </div>
-        <CustomerPage
-          orders={orders}
-          cart={cart}
-          menu={menu}
-          setOrders={setOrders}
-          setCart={setCart}
-        />
+      <CustomerPage
+        orders={orders}
+        cart={cart}
+        menu={menu}
+        setOrders={setOrders}
+        setCart={setCart}
+      />
       <Footer />
     </div>
   );
