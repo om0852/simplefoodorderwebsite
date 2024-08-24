@@ -1,12 +1,12 @@
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 const LoginForm = () => {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('customer');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("customer");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
@@ -18,6 +18,9 @@ const LoginForm = () => {
       if (res.data.message !== "Login Failed") {
         localStorage.setItem("food_role", role);
         alert(res.data.message);
+        if (res.data.data.type == "admin") {
+          router.push("/admin");
+        }
         router.push("/");
       } else {
         alert(res.data.message);

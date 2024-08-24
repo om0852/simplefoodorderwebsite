@@ -9,7 +9,7 @@ export  async function POST(req) {
     const data = await User.findOne({ email, password,type:role });
     if (data) {
       return NextResponse.json(
-        { message: "Login Successfully" },
+        { message: "Login Successfully",data },
         { status: 200 }
       );
     } else {
