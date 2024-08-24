@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 const Page = () => {
   const [orders, setOrders] = useState([]);
-  const [confirm,setConfirm]=useState([]);
+  const [confirm, setConfirm] = useState([]);
   const [menuu, setMenuu] = useState([]);
 
   useEffect(() => {
@@ -24,26 +24,28 @@ const Page = () => {
   const saveToLocalStorage = (key, value) => {
     localStorage.setItem(key, JSON.stringify(value));
   };
-const handleConfirm =(index)=>{
-  const confirmorder = orders[index]
-  console.log(confirmorder)
-  saveToLocalStorage("confirm",[...confirm,confirmorder])
-  const newOrder=orders.filter((d,ind)=>ind!=index)
-  saveToLocalStorage("orders",newOrder)
-  console.log(newOrder)
-  localCaller();
-  // saveToLocalStorage("orders",);
-}
+  const handleConfirm = (index) => {
+    const confirmorder = orders[index];
+    console.log(confirmorder);
+    saveToLocalStorage("confirm", [...confirm, confirmorder]);
+    const newOrder = orders.filter((d, ind) => ind != index);
+    saveToLocalStorage("orders", newOrder);
+    console.log(newOrder);
+    localCaller();
+    // saveToLocalStorage("orders",);
+  };
 
   const handleAddItem = (e) => {
     e.preventDefault();
     const name = document.getElementById("item-name").value;
     const price = document.getElementById("item-price").value;
     axios.post("/api/product", { title: name, price });
+    alert("menu added");
   };
 
   return (
-    <div>
+    <div className="container">
+      <h1 className="my-2 text-xl"> Admin Panel</h1>
       <form onSubmit={handleAddItem}>
         <label htmlFor="item-name">Item Name:</label>
         <input type="text" id="item-name" required />
@@ -72,7 +74,7 @@ const handleConfirm =(index)=>{
                 </li>
               ))}
             </ul>
-            <button onClick={()=>handleConfirm(index)}>Confirm </button>
+            <button onClick={() => handleConfirm(index)}>Confirm </button>
           </div>
         ))
       ) : (
