@@ -5,13 +5,14 @@ const Menu = ({menu, onAddToCart }) => {
   return (
     <div id="menu" >
       <h3>Menu</h3>
-      {menu && menu.map((item, index) => (
+      {menu && menu.map((item, index) => {
+        return(
         <div key={index}>
-          <h4>{item.name}</h4>
+          <h2>{item.name}</h2>
           <p>Price:₹{item.price}</p>
           <button onClick={() => onAddToCart(item.name)}>Add to Cart</button>
         </div>
-      ))}
+      )})}
     </div>
   );
 };

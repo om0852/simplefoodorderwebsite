@@ -7,6 +7,6 @@ export async function GET(){
 }
 export async function POST(req){
     const {title,price}=await req.json();
-    await Product.create({title,price});
+    await Product.create({name:title,price});
     return NextResponse.json({message:"Created"})
 }

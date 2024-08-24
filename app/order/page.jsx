@@ -33,7 +33,7 @@ const Order = () => {
   // Load saved data from localStorage
   useEffect(() => {
     if (isBrowser) {
-    axios.get("/api/product").then((res)=>setMenu(res.data.data))
+    axios.get("/api/product").then((res)=>{setMenu(res.data.data);console.log(res.data.data)})
       const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
       const savedCompletedOrders =
         JSON.parse(localStorage.getItem("completedOrders")) || [];
